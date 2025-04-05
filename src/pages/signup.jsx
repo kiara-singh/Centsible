@@ -27,6 +27,12 @@ const Signup = () => {
       await setDoc(doc(db, 'users', user.uid), {
         name: name,
         email: email,
+        Groceries:0,
+        Education:0,
+        Shopping:0,
+        Fun:0,
+        Transportation:0,
+        Other:0,
       });
 
       

@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { collection, addDoc } from "firebase/firestore";
+import { doc,collection, addDoc, updateDoc, getDoc } from "firebase/firestore";
 import { auth, db } from "../firebase";
 import { categories } from "../constants";
 
@@ -18,10 +18,35 @@ export default function Dashboard() {
     try {
       await addDoc(collection(db, "transactions"), {
         notes: notes.current.value,
-        amount: cost.current.value,
+        amount: Number(cost.current.value),
         category: category,
         user: auth.currentUser.uid,
       });
+
+      const valRef=doc(db,"users", auth.currentUser.uid)
+
+      //get current value
+      const valSnap=await getDoc(valRef);
+
+      if(valSnap.exists()){
+        console.log("value: ", valSnap.data());
+      }else{
+        console.log("no value found");
+      }
+
+      const data=valSnap.data();
+      const prevVal=data[category] || 0;
+      console.log("prev: ", prevVal);
+      const newVal=prevVal+Number(cost.current.value);
+      console.log(newVal);
+
+      //increment it 
+      await updateDoc(valRef,{
+        [category]:newVal
+      })
+
+      console.log("updated value")
+
     } catch (error) {
       setError(error.message);
       console.error(error.message);
@@ -44,7 +69,6 @@ export default function Dashboard() {
           ref={notes}
           className="border border-gray-300 text-black text-sm rounded-md w-full p-2.5 y-600 placeholder:text-gray-400"
           placeholder="Notes"
-          required
         />
         <div className="relative inline-block text-left">
           <div>
