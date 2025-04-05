@@ -1,26 +1,42 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import { doc, setDoc } from "firebase/firestore";
-import { auth, db } from "../firebase";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../firebase";
 
 const Login = () => {
-  const auth = getAuth();
-  signInWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-      const user = userCredential.user;
-    })
-    .catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-    });
+  const navigate = useNavigate();
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
+
+    try {
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      console.log("user:", userCredential.user);
+      navigate("/dashboard"); // Change this to wherever you want to redirect after login
+    } catch (err) {
+      setError(err.message);
+    }
+
+    setLoading(false);
+  };
 
   return (
     <main>
       <section>
         <div>
           <div>
-            <h1>Centsible</h1>
+            <h1>Centsible - Login</h1>
             <form onSubmit={onSubmit}>
               <div>
                 <label htmlFor="email-address">Email</label>
@@ -50,7 +66,7 @@ const Login = () => {
 
               <div>
                 <button type="submit" disabled={loading}>
-                  {loading ? "Creating Account..." : "Sign Up"}
+                  {loading ? "Logging in..." : "Log In"}
                 </button>
               </div>
             </form>

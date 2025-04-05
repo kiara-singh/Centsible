@@ -30,6 +30,8 @@ export default function Dashboard() {
 
   return (
     <div className="flex justify-center items-center mx-auto max-w-[80%] min-h-screen">
+
+
       <form onSubmit={handleSubmit} className="flex flex-col w-1/2 gap-2">
         <label className="font-medium">Transaction</label>
         <input
