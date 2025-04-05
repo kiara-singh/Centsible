@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { doc, setDoc } from "firebase/firestore";
+import { collection, addDoc } from "firebase/firestore";
 import { auth, db } from "../firebase";
 
 export default function Dashboard() {
@@ -16,7 +16,7 @@ export default function Dashboard() {
     setError("");
 
     try {
-      await setDoc(doc(db, "transactions", "transaction"), {
+      await addDoc(collection(db, "transactions"), {
         notes: notes.current.value,
         amount: cost.current.value,
         category: category,
@@ -30,8 +30,6 @@ export default function Dashboard() {
 
   return (
     <div className="flex justify-center items-center mx-auto max-w-[80%] min-h-screen">
-
-
       <form onSubmit={handleSubmit} className="flex flex-col w-1/2 gap-2">
         <label className="font-medium">Transaction</label>
         <input
