@@ -1,25 +1,29 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../firebase';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../firebase";
 
 const Login = () => {
   const navigate = useNavigate();
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   const onSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setError('');
+    setError("");
 
     try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      console.log('user:', userCredential.user);
-      navigate('/dashboard'); // Change this to wherever you want to redirect after login
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      console.log("user:", userCredential.user);
+      navigate("/dashboard"); // Change this to wherever you want to redirect after login
     } catch (err) {
       setError(err.message);
     }
@@ -62,7 +66,7 @@ const Login = () => {
 
               <div>
                 <button type="submit" disabled={loading}>
-                  {loading ? 'Logging in...' : 'Log In'}
+                  {loading ? "Logging in..." : "Log In"}
                 </button>
               </div>
             </form>

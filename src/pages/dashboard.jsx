@@ -1,14 +1,31 @@
 import React, { useState, useRef } from "react";
+import { doc, setDoc } from "firebase/firestore";
+import { auth, db } from "../firebase";
 
 export default function Dashboard() {
   const [dropDown, setDropDown] = useState(false);
+  const [error, setError] = useState("");
+
   const categories = ["Groceries", "Education", "Fun", "Travel"];
-  const purchase = useRef("");
+  const notes = useRef("");
   const cost = useRef(0);
   const [category, setCategory] = useState("Choose category");
 
-  const handleSubmit = () => {
-    console.log(purchase.current.value, cost.current.value, category);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+
+    try {
+      await setDoc(doc(db, "transactions", "transaction"), {
+        notes: notes.current.value,
+        amount: cost.current.value,
+        category: category,
+        user: auth.currentUser.uid,
+      });
+    } catch (error) {
+      setError(error.message);
+      console.error(error.message);
+    }
   };
 
   return (
@@ -19,9 +36,9 @@ export default function Dashboard() {
         <label className="font-medium">Transaction</label>
         <input
           type="text"
-          ref={purchase}
+          ref={notes}
           className="border border-gray-300 text-black text-sm rounded-md w-full p-2.5 y-600 placeholder:text-gray-400"
-          placeholder="Purchase"
+          placeholder="Notes"
           required
         />
         <input
@@ -71,6 +88,7 @@ export default function Dashboard() {
         >
           Log Transaction
         </button>
+        {error && <p className="text-red-900">{error}</p>}
       </form>
     </div>
   );
