@@ -35,17 +35,17 @@ export default function Dashboard() {
       <form onSubmit={handleSubmit} className="flex flex-col w-1/2 gap-2">
         <label className="font-medium">Transaction</label>
         <input
-          type="text"
-          ref={notes}
-          className="border border-gray-300 text-black text-sm rounded-md w-full p-2.5 y-600 placeholder:text-gray-400"
-          placeholder="Notes"
-          required
-        />
-        <input
           type="number"
           ref={cost}
           className="border border-gray-300 text-black text-sm rounded-md w-full p-2.5 y-600 placeholder:text-gray-400"
           placeholder="Cost"
+          required
+        />
+        <input
+          type="text"
+          ref={notes}
+          className="border border-gray-300 text-black text-sm rounded-md w-full p-2.5 y-600 placeholder:text-gray-400"
+          placeholder="Notes"
           required
         />
         <div className="relative inline-block text-left">
