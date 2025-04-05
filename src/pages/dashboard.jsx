@@ -1,12 +1,12 @@
 import React, { useState, useRef } from "react";
 import { collection, addDoc } from "firebase/firestore";
 import { auth, db } from "../firebase";
+import { categories } from "../constants";
 
 export default function Dashboard() {
   const [dropDown, setDropDown] = useState(false);
   const [error, setError] = useState("");
 
-  const categories = ["Groceries", "Education", "Fun", "Travel"];
   const notes = useRef("");
   const cost = useRef(0);
   const [category, setCategory] = useState("Choose category");
