@@ -22,9 +22,12 @@ const Login = () => {
         email,
         password
       );
+      const user=auth.currentUser;
+      //store user info in local storage 
+      localStorage.setItem('user',JSON.stringify(user));
       console.log("user:", userCredential.user);
-      navigate("/dashboard"); // Change this to wherever you want to redirect after login
-    } catch (err) {
+      navigate("/home"); // Change this to wherever you want to redirect after login
+    } catch (error) {
       setError(err.message);
     }
 

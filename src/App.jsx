@@ -4,24 +4,49 @@ import Signup from "./pages/Signup";
 import Dashboard from "./pages/dashboard";
 import Home from "./pages/home";
 import Filter from "./pages/filter";
-import { BrowserRouter as Router } from "react-router-dom";
-import { Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { auth } from "./firebase";
+import { onAuthStateChanged } from "firebase/auth";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
+  const [user,setUser]=useState(null);
+
+  useEffect(() => {
+
+    const savedUser = localStorage.getItem("user");
+    if (savedUser) {
+      setUser(JSON.parse(savedUser)); 
+    }
+
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUser(user);
+        localStorage.setItem('user', JSON.stringify(user)); 
+      } else {
+        setUser(null);
+        localStorage.removeItem('user'); 
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+
+
   return (
+
     <Router>
-      <div>
-        <section>
-          <Routes>
-            <Route path="/" element={<Signup />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/home" element={<Home />} />
-            <Route path="/filter" element={<Filter/>} />
-          </Routes>
-        </section>
-      </div>
+      <Routes>
+        <Route path="/" element={<Signup />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        {/* Use ProtectedRoute for protected pages */}
+        <Route path="/home" element={<ProtectedRoute element={Home} />} />
+        <Route path="/filter" element={<ProtectedRoute element={Filter} />} />
+      </Routes>
     </Router>
+
   );
 }
 
