@@ -1,6 +1,5 @@
 
 import PieChartComponent from "../components/pieChart";
-import SignOutButton from "../components/SignOutButton";
 import { useNavigate } from "react-router-dom";
 import { categories } from "../constants";
 import {
@@ -30,12 +29,9 @@ const Home = () => {
     <>
         <div>
             <PieChartComponent></PieChartComponent>
-
-            <SignOutButton></SignOutButton>
-
         </div>
-      {/*Budget Categories*/}
-      <div className="flex flex-col justify-center items-center">
+
+      <div className="flex flex-col justify-center items-center mb-8">
         {categories.map((category, index) => {
           return (
             <div
@@ -44,7 +40,7 @@ const Home = () => {
               className="flex flex-row justify-between items-center w-[80%] border-slate-400 hover:cursor-pointer"
             >
               {icons[index]}
-              <p className="p-4 font-semibold text-slate-700 text-xl w-full">
+              <p className="p-3 font-semibold text-slate-700 text-xl w-full">
                 {category}
               </p>
               <RightOutlined />
@@ -52,7 +48,9 @@ const Home = () => {
           );
         })}
       </div>
-      <Navbar />
+      <div className="mt=200">
+        <Navbar />
+      </div>
     </>
   );
 

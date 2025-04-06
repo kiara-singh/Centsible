@@ -43,7 +43,7 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         {/* Use ProtectedRoute for protected pages */}
         <Route path="/home" element={<ProtectedRoute element={Home} />} />
-        <Route path="/filter:category" element={<ProtectedRoute element={Filter} />} />
+        <Route path="/filter/:category" element={<ProtectedRoute element={Filter} />} />
       </Routes>
     </Router>
 
