@@ -10,6 +10,7 @@ export default function Dashboard() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [audioStatus, setAudioStatus] = useState("");
+  const[usingVoice,setUsingVoice]=useState(false);
 
 
   const notes = useRef("");
@@ -24,14 +25,14 @@ export default function Dashboard() {
   }, []);
 
   useEffect(() => {
-    if (category !== "Choose category") {
+    if (category !== "Choose category" && usingVoice) {
       console.log("Category updated:", category);
       setTimeout(() => {
         console.log("Submitting the form after 2 seconds...");
         handleSubmit();
       }, 2000);
     }
-  }, [category]); // Runs every time category changes
+  }, [category, usingVoice]); // Runs every time category changes
 
  
   const handleVoiceExtraction = ({
@@ -43,6 +44,7 @@ export default function Dashboard() {
     notes.current.value = voiceNote;
     voiceCategoryRef.current = voiceCategory;
     setCategory(voiceCategoryRef.current);
+    setUsingVoice(true);
 
     console.log("Category set to:", voiceCategory);
 
