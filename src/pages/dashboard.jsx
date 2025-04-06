@@ -1,16 +1,23 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { doc, setDoc } from "firebase/firestore";
 import { auth, db } from "../firebase";
 import { Navbar } from "../components/navbar";
+import SpeechToText from "./voiceCommand";
 
 export default function Dashboard() {
   const [dropDown, setDropDown] = useState(false);
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [audioStatus, setAudioStatus] = useState("");
 
   const categories = ["Groceries", "Education", "Fun", "Travel"];
   const notes = useRef("");
   const cost = useRef(0);
   const [category, setCategory] = useState("Choose category");
+
+  useEffect(() => {
+    setDropDown(false);
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -31,14 +38,14 @@ export default function Dashboard() {
 
   return (
     <>
-      <div className="flex bg-[#f9faf3] min-h-screen">
+      <div className="flex flex-col bg-[#f9faf3] h-screen overflow-hidden">
         <div className="flex justify-center items-center mx-auto max-w-[80%] min-h-screen">
-            <h1 class="text-3xl font-bold font-Roboto absolute top-3 w-full py-4 bg-[#f9faf3] text-center text-[#012a57]">
-              Centsible
-            </h1>
+          <h1 className="text-3xl font-bold font-Roboto absolute top-0 w-full py-4 bg-[#f9faf3] text-center text-[#012a57]">
+            Centsible
+          </h1>
           <form
             onSubmit={handleSubmit}
-            className="absolute top-60 left-1/2 transform -translate-x-1/2 flex flex-col w-7/8 gap-5"
+            className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col w-7/8 gap-5"
           >
             <label className="font-medium text-center text-[#012a57] font-Roboto text-2xl">
               Add your transaction
@@ -46,14 +53,14 @@ export default function Dashboard() {
             <input
               type="number"
               ref={cost}
-              className="border border-gray-300 text-black text-sm rounded-md w-full p-2.5 y-600 placeholder:text-gray-400"
+              className="border border-gray-300 text-black text-sm rounded-md w-full p-2.5 placeholder:text-gray-400"
               placeholder="Cost"
               required
             />
             <input
               type="text"
               ref={notes}
-              className="border border-gray-300 text-black text-sm rounded-md w-full p-2.5 y-600 placeholder:text-gray-400"
+              className="border border-gray-300 text-black text-sm rounded-md w-full p-2.5 placeholder:text-gray-400"
               placeholder="Notes"
               required
             />
@@ -90,7 +97,7 @@ export default function Dashboard() {
                 </div>
               </div>
             </div>
-            <div className="items-center justify-center min-h-screen">
+            <div className="flex flex-row items-center justify-center gap-3">
               <center>
                 <button
                   type="submit"
@@ -99,7 +106,9 @@ export default function Dashboard() {
                   Log Transaction
                 </button>
               </center>
+              <SpeechToText className="m-3" />
             </div>
+            <p>{audioStatus}</p>
             {error && <p className="text-red-900">{error}</p>}
           </form>
         </div>
