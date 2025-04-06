@@ -1,6 +1,9 @@
 import React from "react";
 import { HomeOutlined, DollarOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
+import { signOut } from "firebase/auth";
+import { auth } from "../firebase";
+
 export const Navbar = () => {
   const navigate = useNavigate();
   return (
@@ -17,7 +20,12 @@ export const Navbar = () => {
         }}
         style={{ fontSize: "25px" }}
       />
-      <button className="font-normal text-[18px] text-amber-900">Logout</button>
+      <button
+        onClick={() => signOut(auth).then(navigate("/login"))}
+        className="font-normal text-[18px] text-amber-900"
+      >
+        Logout
+      </button>
     </div>
   );
 };
