@@ -55,6 +55,9 @@ export default function Dashboard() {
       });
 
       console.log("Updated value");
+      notes.current.value = "";
+      cost.current.value = "";
+      setCategory("Choose category");
     } catch (error) {
       setError(error.message);
       console.error(error.message);
@@ -77,6 +80,7 @@ export default function Dashboard() {
             </label>
             <input
               type="number"
+              step="0.01"
               ref={cost}
               className="border border-gray-300 text-black text-sm rounded-md w-full p-2.5 placeholder:text-gray-400"
               placeholder="Cost"
