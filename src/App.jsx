@@ -13,26 +13,6 @@ import SpeechToText from "./pages/voiceCommand";
 function App() {
   const [user,setUser]=useState(null);
 
-  useEffect(() => {
-
-    const savedUser = localStorage.getItem("user");
-    if (savedUser) {
-      setUser(JSON.parse(savedUser)); 
-    }
-
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setUser(user);
-        localStorage.setItem('user', JSON.stringify(user)); 
-      } else {
-        setUser(null);
-        localStorage.removeItem('user'); 
-      }
-    });
-
-    return () => unsubscribe();
-  }, []);
-
 
 
   return (

@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
-import { doc, setDoc } from "firebase/firestore";
-import { auth, db } from "../firebase";
+import { addDoc, getDoc, updateDoc, collection, doc } from "firebase/firestore"; // Import the necessary functions from Firestore
+import { auth, db } from "../firebase"; // Import your Firebase configuration
 import { Navbar } from "../components/navbar";
 import SpeechToText from "./voiceCommand";
 
@@ -24,12 +24,37 @@ export default function Dashboard() {
     setError("");
 
     try {
-      await setDoc(doc(db, "transactions", "transaction"), {
+      // Add transaction data to Firestore
+      await addDoc(collection(db, "transactions"), {
         notes: notes.current.value,
-        amount: cost.current.value,
+        amount: Number(cost.current.value),
         category: category,
         user: auth.currentUser.uid,
       });
+
+      const valRef = doc(db, "users", auth.currentUser.uid);
+
+      // Get current user data
+      const valSnap = await getDoc(valRef);
+
+      if (valSnap.exists()) {
+        console.log("value: ", valSnap.data());
+      } else {
+        console.log("no value found");
+      }
+
+      const data = valSnap.data();
+      const prevVal = data[category] || 0;
+      console.log("prev: ", prevVal);
+      const newVal = prevVal + Number(cost.current.value);
+      console.log("new value: ", newVal);
+
+      // Increment the value for the category in the user's data
+      await updateDoc(valRef, {
+        [category]: newVal,
+      });
+
+      console.log("Updated value");
     } catch (error) {
       setError(error.message);
       console.error(error.message);
@@ -48,7 +73,7 @@ export default function Dashboard() {
             className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col w-7/8 gap-5"
           >
             <label className="font-medium text-center text-[#012a57] font-Roboto text-2xl">
-              Add Your Transaction
+              Add your transaction
             </label>
             <input
               type="number"
@@ -62,14 +87,13 @@ export default function Dashboard() {
               ref={notes}
               className="border border-gray-300 text-black text-sm rounded-md w-full p-2.5 placeholder:text-gray-400"
               placeholder="Notes"
-              required
             />
             <div className="relative inline-block text-left">
               <div>
                 <button
                   type="button"
                   onClick={() => setDropDown(!dropDown)}
-                  className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 ring-1 shadow-xs ring-gray-300 ring-inset hover:bg-gray-50"
+                  className="inline-flex w-full gap-x-1.5 rounded-md px-3 py-2 text-sm text-gray-900 ring-1 shadow-xs ring-gray-300 ring-inset hover:bg-gray-50"
                   aria-expanded="true"
                   aria-haspopup="true"
                 >
@@ -78,8 +102,8 @@ export default function Dashboard() {
               </div>
 
               <div
-                className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white ring-1 shadow-lg ring-black/5 focus:outline-hidden"
-                hidden={dropDown}
+                className="w-full z-10 mt-2 w-56 origin-top-right rounded-md ring-1 shadow-lg ring-black/5 focus:outline-hidden"
+                hidden={!dropDown} // Fixed visibility logic
               >
                 <div className="py-1" role="none">
                   {categories.map((categoryName) => (
@@ -101,7 +125,7 @@ export default function Dashboard() {
               <center>
                 <button
                   type="submit"
-                  className="hover:cursor-pointer bg-[#012a57] font-bold rounded-xl p-2 w-fit text-[#f9faf3]"
+                  className="hover:cursor-pointer bg-[#012a57] font-bold rounded-xl p-2 w-full text-[#f9faf3]"
                 >
                   Log Transaction
                 </button>
