@@ -13,7 +13,7 @@ const PieChartComponent=() =>{
     useEffect(() => {
         const user = JSON.parse(localStorage.getItem("user"));
         setStoredUser(user);
-      }, []);
+    }, []);
 
     
     useEffect(()=>{
