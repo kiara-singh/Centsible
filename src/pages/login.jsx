@@ -87,6 +87,9 @@ const Login = () => {
                   {loading ? "Logging in..." : "Log In"}
                 </button>
               </div>
+              <p className="text-center">
+                Don't have an account? <a className="underline hover:text-black dark:hover:text-[#012a57]" href="/">Sign up</a>
+              </p>
             </form>
           </div>
         </div>
