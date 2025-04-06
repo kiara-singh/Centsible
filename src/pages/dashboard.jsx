@@ -53,8 +53,6 @@ export default function Dashboard() {
     setError("");
     setShowPopUp(false);
 
-    const category = voiceCategoryRef.current;
-
     try {
       console.log("Submitting to Firestore:", {
         notes: notes.current.value,
@@ -154,7 +152,7 @@ export default function Dashboard() {
                 className="w-full z-10 mt-2 w-56 origin-top-right rounded-md ring-1 shadow-lg ring-black/5 focus:outline-hidden"
                 hidden={!dropDown}
               >
-                <div className="py-1" role="none">
+                <div className="py-1 max-h-35 overflow-y-auto" role="none">
                   {categories.map((categoryName) => (
                     <p
                       onClick={() => {
