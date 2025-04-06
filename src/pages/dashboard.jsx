@@ -34,6 +34,7 @@ export default function Dashboard() {
         <label className="font-medium">Transaction</label>
         <input
           type="number"
+          step="0.01"
           ref={cost}
           className="border border-gray-300 text-black text-sm rounded-md w-full p-2.5 y-600 placeholder:text-gray-400"
           placeholder="Cost"

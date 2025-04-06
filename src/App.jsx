@@ -17,7 +17,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/home" element={<Home />} />
-            <Route path="/filter" element={<Filter/>} />
+            <Route path="/filter/:category" element={<Filter />} />
           </Routes>
         </section>
       </div>
