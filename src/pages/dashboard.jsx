@@ -13,17 +13,55 @@ export default function Dashboard() {
   const categories = ["Groceries", "Education", "Fun", "Travel"];
   const notes = useRef("");
   const cost = useRef(0);
+  const voiceCategoryRef = useRef("Choose category");
   const [category, setCategory] = useState("Choose category");
+
+  const [showPopup, setShowPopUp] = useState(false);
 
   useEffect(() => {
     setDropDown(false);
   }, []);
 
+  const handleVoiceExtraction = ({
+    cost: voiceCost,
+    category: voiceCategory,
+    note: voiceNote,
+  }) => {
+    cost.current.value = voiceCost;
+    notes.current.value = voiceNote;
+    voiceCategoryRef.current = voiceCategory;
+    setCategory(voiceCategory);
+
+    console.log("Category set to:", voiceCategory);
+
+    console.log("Fields populated:", {
+      cost: cost.current.value,
+      notes: notes.current.value,
+      category: voiceCategory,
+    });
+
+    setTimeout(() => {
+      console.log("Submitting the form after 2 seconds...");
+      handleSubmit();
+    }, 2000);
+  };
+
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    //if e is null like when submitting after voice command, this won't run
+    e?.preventDefault();
     setError("");
+    setShowPopUp(false);
+
+    const category = voiceCategoryRef.current;
 
     try {
+      console.log("Submitting to Firestore:", {
+        notes: notes.current.value,
+        amount: Number(cost.current.value),
+        category: category,
+        user: auth.currentUser.uid,
+      });
+
       // Add transaction data to Firestore
       await addDoc(collection(db, "transactions"), {
         notes: notes.current.value,
@@ -31,6 +69,8 @@ export default function Dashboard() {
         category: category,
         user: auth.currentUser.uid,
       });
+
+      console.log("Transaction added to Firestore.");
 
       const valRef = doc(db, "users", auth.currentUser.uid);
 
@@ -54,7 +94,11 @@ export default function Dashboard() {
         [category]: newVal,
       });
 
-      console.log("Updated value");
+      console.log("User's category value updated in Firestore.");
+
+      setShowPopUp(true);
+
+      setTimeout(() => setShowPopUp(false), 2000);
       notes.current.value = "";
       cost.current.value = "";
       setCategory("Choose category");
@@ -107,7 +151,7 @@ export default function Dashboard() {
 
               <div
                 className="w-full z-10 mt-2 w-56 origin-top-right rounded-md ring-1 shadow-lg ring-black/5 focus:outline-hidden"
-                hidden={!dropDown} // Fixed visibility logic
+                hidden={!dropDown}
               >
                 <div className="py-1" role="none">
                   {categories.map((categoryName) => (
@@ -134,13 +178,19 @@ export default function Dashboard() {
                   Log Transaction
                 </button>
               </center>
-              <SpeechToText className="m-3" />
+              <SpeechToText className="m-3" onExtract={handleVoiceExtraction} />
             </div>
             <p>{audioStatus}</p>
             {error && <p className="text-red-900">{error}</p>}
           </form>
         </div>
       </div>
+
+      {showPopup && (
+        <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-blue-500 text-white p-2 rounded-lg shadow-lg">
+          <p>Entered!</p>
+        </div>
+      )}
       <Navbar />
     </>
   );

@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import { categories } from "../constants";
-
-const SpeechToText = () => {
+import { AudioOutlined } from "@ant-design/icons";
+const SpeechToText = ({ onExtract }) => {
   const [isListening, setIsListening] = useState(false);
   const [transcript, setTranscript] = useState("");
   const recognitionRef = useRef(null);
@@ -25,28 +25,46 @@ const SpeechToText = () => {
 
       recognitionRef.current.onresult = (event) => {
         let interimTranscript = "";
+        let match = null;
         for (let i = event.resultIndex; i < event.results.length; i++) {
           const result = event.results[i];
           if (result.isFinal) {
+            const finalText = result[0].transcript.trim();
             setTranscript((prev) => prev + result[0].transcript + " ");
+            console.log("Final Transcript:", finalText);
+            const categoryPattern = categories.join("|");
+            console.log("Category pattern:", categoryPattern);
+
+            const pattern = new RegExp(
+              `(\\d+(?:\\.\\d{1,2})?)\\s*(?:dollars?|bucks)?\\s*(?:on|for)?\\s*(${categoryPattern})\\b(?:.*?\\s(.+))?`,
+              "i"
+            );
+            match = finalText.match(pattern);
           } else {
             interimTranscript += result[0].transcript;
           }
         }
 
-        const categoryPattern = categories.join("|");
-        const pattern = new RegExp(
-          `(\\d+(?:\\.\\d{1,2})?)\\s*(?:dollars?|bucks)?\\s*(?:on|for)?\\s*(${categoryPattern})\\b(?:.*?\\s(.+))?`,
-          "i"
-        );
-        const match = interimTranscript.match(pattern);
-
         if (match) {
           const cost = parseFloat(match[1]);
-          const category = match[2];
+          let category = match[2];
+          category = category.charAt(0).toUpperCase() + category.slice(1);
           const note = match[3] ? match[3].trim() : null;
 
-          console.log(cost, category, note);
+          console.log(
+            "Matched values - Cost:",
+            cost,
+            "Category:",
+            category,
+            "Note:",
+            note
+          );
+
+          if (onExtract) {
+            onExtract({ cost, category, note });
+          }
+
+          console.log("inVC:", cost, category, note);
         }
       };
 
@@ -59,19 +77,20 @@ const SpeechToText = () => {
       recognitionRef.current.start();
     } else {
       recognitionRef.current.stop();
+      setTranscript("");
     }
 
     setIsListening((prev) => !prev);
   };
 
   return (
-    <div>
-      <button onClick={toggleListening}>
+    <div className="flex flex-col">
+      <AudioOutlined style={{ fontSize: "25px" }} onClick={toggleListening}>
         {isListening ? "Stop Listening" : "Start Listening"}
-      </button>
-      <p>
+      </AudioOutlined>
+      {/* <p>
         <strong>Transcript:</strong> {transcript}
-      </p>
+      </p> */}
     </div>
   );
 };
