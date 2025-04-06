@@ -55,7 +55,6 @@ const PieChartComponent=() =>{
       ];
 
     return (
-      <div className="flex flex-col bg-[#f9faf3]">
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
 
@@ -89,7 +88,7 @@ const PieChartComponent=() =>{
               </PieChart>
             )}
           </div>
-          </div>
+    
           <div>
             {/* Additional content below */}
           </div>
