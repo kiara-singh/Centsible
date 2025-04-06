@@ -3,6 +3,7 @@ import { addDoc, getDoc, updateDoc, collection, doc } from "firebase/firestore";
 import { auth, db } from "../firebase"; // Import your Firebase configuration
 import { Navbar } from "../components/navbar";
 import SpeechToText from "./voiceCommand";
+import { categories } from "../constants";
 
 export default function Dashboard() {
   const [dropDown, setDropDown] = useState(false);
@@ -10,7 +11,7 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(false);
   const [audioStatus, setAudioStatus] = useState("");
 
-  const categories = ["Groceries", "Education", "Fun", "Travel"];
+
   const notes = useRef("");
   const cost = useRef(0);
   const voiceCategoryRef = useRef("Choose category");
@@ -51,8 +52,6 @@ export default function Dashboard() {
     e?.preventDefault();
     setError("");
     setShowPopUp(false);
-
-    const category = voiceCategoryRef.current;
 
     try {
       console.log("Submitting to Firestore:", {
@@ -153,7 +152,7 @@ export default function Dashboard() {
                 className="w-full z-10 mt-2 w-56 origin-top-right rounded-md ring-1 shadow-lg ring-black/5 focus:outline-hidden"
                 hidden={!dropDown}
               >
-                <div className="py-1" role="none">
+                <div className="py-1 max-h-35 overflow-y-auto" role="none">
                   {categories.map((categoryName) => (
                     <p
                       onClick={() => {
@@ -169,7 +168,7 @@ export default function Dashboard() {
                 </div>
               </div>
             </div>
-            <div className="flex flex-row items-center justify-center gap-3">
+            <div className="flex flex-row items-center justify-center gap-3 mb-15" >
               <center>
                 <button
                   type="submit"
@@ -180,18 +179,21 @@ export default function Dashboard() {
               </center>
               <SpeechToText className="m-3" onExtract={handleVoiceExtraction} />
             </div>
-            <p>{audioStatus}</p>
+            <p >{audioStatus}</p>
             {error && <p className="text-red-900">{error}</p>}
+            {showPopup && (
+              <div className="absolute bottom-1 left-1/2 transform -translate-x-1/2 bg-sky-800 text-white px-4 py-2 rounded-xl shadow-md animate-bounce z-10 mt-50">
+                <p>Entered!</p>
+              </div>
+            )}
           </form>
+  
         </div>
       </div>
 
-      {showPopup && (
-        <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-blue-500 text-white p-2 rounded-lg shadow-lg">
-          <p>Entered!</p>
-        </div>
-      )}
-      <Navbar />
+      <div className="mt=200">
+        <Navbar />
+      </div>
     </>
   );
 }

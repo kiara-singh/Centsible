@@ -50,9 +50,7 @@ const PieChartComponent=() =>{
         
     }), [storedUser, isDataFetched];
     
-    const colors = [
-        "#011f4b", "#03396c", "#005b96", "#6497b1", "#b3cde0", "#ce8b54", "#d2a56d"
-      ];
+    const colors = ["#FFD700"," #0dc6d3","  #0d8ba0", "#055180","  #07276a", "  #042839"]
 
     return (
       <div className="flex flex-col bg-[#f9faf3]">
