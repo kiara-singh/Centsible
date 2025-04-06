@@ -9,6 +9,7 @@ import {
   HeartOutlined,
   SmileOutlined,
 } from "@ant-design/icons";
+import { Navbar } from "../components/navbar";
 
 const icons = [
   <ShoppingCartOutlined />,
@@ -42,6 +43,7 @@ const Home = () => {
           );
         })}
       </div>
+      <Navbar />
     </>
   );
 };
