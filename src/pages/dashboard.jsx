@@ -153,7 +153,7 @@ export default function Dashboard() {
 
               <div
                 className="w-full z-10 mt-2 w-56 origin-top-right rounded-md ring-1 shadow-lg ring-black/5 focus:outline-hidden"
-                hidden={!dropDown} // Fixed visibility logic
+                hidden={!dropDown}
               >
                 <div className="py-1" role="none">
                   {categories.map((categoryName) => (

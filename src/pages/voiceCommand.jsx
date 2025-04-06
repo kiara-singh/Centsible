@@ -83,7 +83,7 @@ const SpeechToText = ({onExtract}) => {
         {isListening ? "Stop Listening" : "Start Listening"}
       </button>
       <p>
-        <strong>Transcript:</strong> {transcript}
+        <strong>Transcript:</strong> {isListening ? transcript : " "}
       </p>
     </div>
   );
