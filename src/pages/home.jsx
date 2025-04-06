@@ -1,3 +1,6 @@
+
+import PieChartComponent from "../components/pieChart";
+import SignOutButton from "../components/SignOutButton";
 import { useNavigate } from "react-router-dom";
 import { categories } from "../constants";
 import {
@@ -25,6 +28,12 @@ const Home = () => {
 
   return (
     <>
+        <div>
+            <PieChartComponent></PieChartComponent>
+
+            <SignOutButton></SignOutButton>
+
+        </div>
       {/*Budget Categories*/}
       <div className="flex flex-col justify-center items-center">
         {categories.map((category, index) => {
@@ -46,6 +55,7 @@ const Home = () => {
       <Navbar />
     </>
   );
+
 };
 
 export default Home;
