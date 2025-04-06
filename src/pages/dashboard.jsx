@@ -23,6 +23,17 @@ export default function Dashboard() {
     setDropDown(false);
   }, []);
 
+  useEffect(() => {
+    if (category !== "Choose category") {
+      console.log("Category updated:", category);
+      setTimeout(() => {
+        console.log("Submitting the form after 2 seconds...");
+        handleSubmit();
+      }, 2000);
+    }
+  }, [category]); // Runs every time category changes
+
+ 
   const handleVoiceExtraction = ({
     cost: voiceCost,
     category: voiceCategory,
@@ -31,7 +42,7 @@ export default function Dashboard() {
     cost.current.value = voiceCost;
     notes.current.value = voiceNote;
     voiceCategoryRef.current = voiceCategory;
-    setCategory(voiceCategory);
+    setCategory(voiceCategoryRef.current);
 
     console.log("Category set to:", voiceCategory);
 
@@ -41,10 +52,6 @@ export default function Dashboard() {
       category: voiceCategory,
     });
 
-    setTimeout(() => {
-      console.log("Submitting the form after 2 seconds...");
-      handleSubmit();
-    }, 2000);
   };
 
   const handleSubmit = async (e) => {
@@ -52,6 +59,7 @@ export default function Dashboard() {
     e?.preventDefault();
     setError("");
     setShowPopUp(false);
+
 
     try {
       console.log("Submitting to Firestore:", {
