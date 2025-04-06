@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { doc, setDoc } from "firebase/firestore";
+import { collection, addDoc } from "firebase/firestore";
 import { auth, db } from "../firebase";
 import { Navbar } from "../components/navbar";
 import SpeechToText from "./voiceCommand";
@@ -24,7 +24,7 @@ export default function Dashboard() {
     setError("");
 
     try {
-      await setDoc(doc(db, "transactions", "transaction"), {
+      await addDoc(collection(db, "transactions"), {
         notes: notes.current.value,
         amount: cost.current.value,
         category: category,
