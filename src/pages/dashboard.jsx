@@ -17,15 +17,19 @@ export default function Dashboard() {
   const voiceCategoryRef = useRef("Choose category");
   const [category, setCategory] = useState("Choose category");
 
-  const[showPopup, setShowPopUp] = useState(false);
+  const [showPopup, setShowPopUp] = useState(false);
 
   useEffect(() => {
     setDropDown(false);
   }, []);
 
-  const handleVoiceExtraction=({cost:voiceCost, category: voiceCategory, note:voiceNote}) =>{
-    cost.current.value=voiceCost;
-    notes.current.value=voiceNote;
+  const handleVoiceExtraction = ({
+    cost: voiceCost,
+    category: voiceCategory,
+    note: voiceNote,
+  }) => {
+    cost.current.value = voiceCost;
+    notes.current.value = voiceNote;
     voiceCategoryRef.current = voiceCategory;
     setCategory(voiceCategory);
 
@@ -36,13 +40,12 @@ export default function Dashboard() {
       notes: notes.current.value,
       category: voiceCategory,
     });
-  
-    setTimeout(()=>{
+
+    setTimeout(() => {
       console.log("Submitting the form after 2 seconds...");
       handleSubmit();
-    },2000)
-
-  }
+    }, 2000);
+  };
 
   const handleSubmit = async (e) => {
     //if e is null like when submitting after voice command, this won't run
@@ -53,7 +56,6 @@ export default function Dashboard() {
     const category = voiceCategoryRef.current;
 
     try {
-
       console.log("Submitting to Firestore:", {
         notes: notes.current.value,
         amount: Number(cost.current.value),
@@ -93,16 +95,14 @@ export default function Dashboard() {
         [category]: newVal,
       });
 
-      
       console.log("User's category value updated in Firestore.");
 
       setShowPopUp(true);
-      
-      setTimeout(()=>setShowPopUp(false),2000);
+
+      setTimeout(() => setShowPopUp(false), 2000);
       notes.current.value = "";
       cost.current.value = "";
       setCategory("Choose category");
-
     } catch (error) {
       setError(error.message);
       console.error(error.message);
@@ -179,7 +179,7 @@ export default function Dashboard() {
                   Log Transaction
                 </button>
               </center>
-              <SpeechToText className="m-3"onExtract={handleVoiceExtraction} />
+              <SpeechToText className="m-3" onExtract={handleVoiceExtraction} />
             </div>
             <p >{audioStatus}</p>
             {error && <p className="text-red-900">{error}</p>}
