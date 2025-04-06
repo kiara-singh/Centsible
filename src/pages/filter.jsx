@@ -31,14 +31,17 @@ const Filter = () => {
 
   return (
     <>
+    <div className="flex flex-col bg-[#f9faf3]">
       <ArrowLeftOutlined
         onClick={() => navigate("/home")}
         className="hover:cursor-pointer m-6"
       />
-      <div className="flex flex-col justify-center items-center">
+    </div>
+    <div className="flex flex-col bg-[#f9faf3] min-h-screen">
+      <div className="flex flex-col bg-[#f9faf3] justify-center items-center">
         <h1 className="font-bold text-5xl text-slate-700">{category}</h1>
       </div>
-      <div className="flex flex-col justify-center items-center mx-auto mt-5 gap-2">
+      <div className="flex flex-col justify-center w-full items-center mx-auto mt-5 gap-2">
         {transactions.map((doc, index) => {
           return (
             <div
@@ -50,6 +53,7 @@ const Filter = () => {
             </div>
           );
         })}
+      </div>
       </div>
       {error && <p className="text-red-900 m-auto">{error}</p>}
     </>
