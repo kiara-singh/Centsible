@@ -37,12 +37,13 @@ const Login = () => {
   return (
     <main>
       <section>
-        <div>
+        <div className="flex bg-[#f9faf3] min-h-screen">
           <div>
-            <h1>Centsible - Login</h1>
-            <form onSubmit={onSubmit}>
+          <h1 class="text-3xl font-bold font-Roboto absolute top-0 w-full py-4 bg-[#f9faf3] text-center text-[#012a57]"> Centsible </h1>
+            <form onSubmit={onSubmit} className="absolute top-60 left-1/2 transform -translate-x-1/2 flex flex-col w-7/8 gap-5">
+            <label className="font-medium text-center text-[#012a57] font-Roboto text-2xl">Welcome back!</label>
               <div>
-                <label htmlFor="email-address">Email</label>
+                {/*<label htmlFor="email-address">Email</label>*/}
                 <input
                   type="email"
                   id="email-address"
@@ -50,11 +51,12 @@ const Login = () => {
                   onChange={(e) => setEmail(e.target.value)}
                   required
                   placeholder="Email"
+                  className="border border-gray-300 text-black text-sm rounded-md w-full p-2.5 y-600 placeholder:text-gray-400"
                 />
               </div>
 
               <div>
-                <label htmlFor="password">Password</label>
+                {/*<label htmlFor="password">Password</label>*/}
                 <input
                   type="password"
                   id="password"
@@ -62,13 +64,14 @@ const Login = () => {
                   onChange={(e) => setPassword(e.target.value)}
                   required
                   placeholder="Password"
+                  className="border border-gray-300 text-black text-sm rounded-md w-full p-2.5 y-600 placeholder:text-gray-400"
                 />
               </div>
 
               {error && <p className="error-message">{error}</p>}
 
               <div>
-                <button type="submit" disabled={loading}>
+                <button type="submit" className="hover:cursor-pointer bg-[#012a57] round-md font-bold rounded-xl p-2 w-99/100 text-[#f9faf3]" disabled={loading}>
                   {loading ? "Logging in..." : "Log In"}
                 </button>
               </div>
