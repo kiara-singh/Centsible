@@ -26,8 +26,7 @@ export default function Dashboard() {
     cost.current.value=voiceCost;
     notes.current.value=voiceNote;
     voiceCategoryRef.current = voiceCategory;
-
-    // setCategory(voiceCategory);
+    setCategory(voiceCategory);
 
     console.log("Category set to:", voiceCategory);
 
@@ -37,7 +36,6 @@ export default function Dashboard() {
       category: voiceCategory,
     });
   
-
     setTimeout(()=>{
       console.log("Submitting the form after 2 seconds...");
       handleSubmit();

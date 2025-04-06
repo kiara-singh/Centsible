@@ -72,6 +72,7 @@ const SpeechToText = ({onExtract}) => {
       recognitionRef.current.start();
     } else {
       recognitionRef.current.stop();
+      setTranscript("");
     }
 
     setIsListening((prev) => !prev);
@@ -82,9 +83,6 @@ const SpeechToText = ({onExtract}) => {
       <button onClick={toggleListening}>
         {isListening ? "Stop Listening" : "Start Listening"}
       </button>
-      <p>
-        <strong>Transcript:</strong> {isListening ? transcript : " "}
-      </p>
     </div>
   );
 };
