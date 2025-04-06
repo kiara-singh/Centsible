@@ -8,34 +8,30 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { auth } from "./firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import ProtectedRoute from "./components/ProtectedRoute";
-
+import SpeechToText from "./pages/voiceCommand";
 function App() {
-  const [user,setUser]=useState(null);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
-
     const savedUser = localStorage.getItem("user");
     if (savedUser) {
-      setUser(JSON.parse(savedUser)); 
+      setUser(JSON.parse(savedUser));
     }
 
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         setUser(user);
-        localStorage.setItem('user', JSON.stringify(user)); 
+        localStorage.setItem("user", JSON.stringify(user));
       } else {
         setUser(null);
-        localStorage.removeItem('user'); 
+        localStorage.removeItem("user");
       }
     });
 
     return () => unsubscribe();
   }, []);
 
-
-
   return (
-
     <Router>
       <Routes>
         <Route path="/" element={<Signup />} />
@@ -43,10 +39,13 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         {/* Use ProtectedRoute for protected pages */}
         <Route path="/home" element={<ProtectedRoute element={Home} />} />
-        <Route path="/filter/:category" element={<ProtectedRoute element={Filter} />} />
+        <Route
+          path="/filter/:category"
+          element={<ProtectedRoute element={Filter} />}
+        />
+        <Route path="/voice" element={<SpeechToText />} />
       </Routes>
     </Router>
-
   );
 }
 
