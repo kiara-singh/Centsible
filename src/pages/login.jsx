@@ -22,9 +22,9 @@ const Login = () => {
         email,
         password
       );
-      const user=auth.currentUser;
-      //store user info in local storage 
-      localStorage.setItem('user',JSON.stringify(user));
+      const user = auth.currentUser;
+      //store user info in local storage
+      localStorage.setItem("user", JSON.stringify(user));
       console.log("user:", userCredential.user);
       navigate("/home"); // Change this to wherever you want to redirect after login
     } catch (error) {
@@ -39,9 +39,17 @@ const Login = () => {
       <section>
         <div className="flex bg-[#f9faf3] min-h-screen">
           <div>
-          <h1 class="text-3xl font-bold font-Roboto absolute top-0 w-full py-4 bg-[#f9faf3] text-center text-[#012a57]"> Centsible </h1>
-            <form onSubmit={onSubmit} className="absolute top-60 left-1/2 transform -translate-x-1/2 flex flex-col w-7/8 gap-5">
-            <label className="font-medium text-center text-[#012a57] font-Roboto text-2xl">Welcome back!</label>
+            <h1 className="text-3xl font-bold font-Roboto absolute top-0 w-full py-4 bg-[#f9faf3] text-center text-[#012a57]">
+              {" "}
+              Centsible{" "}
+            </h1>
+            <form
+              onSubmit={onSubmit}
+              className="absolute top-60 left-1/2 transform -translate-x-1/2 flex flex-col w-7/8 gap-5"
+            >
+              <label className="font-medium text-center text-[#012a57] font-Roboto text-2xl">
+                Welcome back!
+              </label>
               <div>
                 {/*<label htmlFor="email-address">Email</label>*/}
                 <input
@@ -71,7 +79,11 @@ const Login = () => {
               {error && <p className="error-message">{error}</p>}
 
               <div>
-                <button type="submit" className="hover:cursor-pointer bg-[#012a57] round-md font-bold rounded-xl p-2 w-99/100 text-[#f9faf3]" disabled={loading}>
+                <button
+                  type="submit"
+                  className="hover:cursor-pointer bg-[#012a57] round-md font-bold rounded-xl p-2 w-99/100 text-[#f9faf3]"
+                  disabled={loading}
+                >
                   {loading ? "Logging in..." : "Log In"}
                 </button>
               </div>
