@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import { categories } from "../constants";
-import { AudioOutlined } from "@ant-design/icons";
+import { AudioMutedOutlined, AudioOutlined } from "@ant-design/icons";
 const SpeechToText = ({ onExtract }) => {
   const [isListening, setIsListening] = useState(false);
   const [transcript, setTranscript] = useState("");
@@ -85,9 +85,19 @@ const SpeechToText = ({ onExtract }) => {
 
   return (
     <div className="flex flex-col">
-      <AudioOutlined style={{ fontSize: "25px" }} onClick={toggleListening}>
-        {isListening ? "Stop Listening" : "Start Listening"}
-      </AudioOutlined>
+      {isListening && (
+        <AudioOutlined style={{ fontSize: "25px" }} onClick={toggleListening}>
+          {isListening ? "Stop Listening" : "Start Listening"}
+        </AudioOutlined>
+      )}
+      {!isListening && (
+        <AudioMutedOutlined
+          style={{ fontSize: "25px" }}
+          onClick={toggleListening}
+        >
+          {isListening ? "Stop Listening" : "Start Listening"}
+        </AudioMutedOutlined>
+      )}
       {/* <p>
         <strong>Transcript:</strong> {transcript}
       </p> */}
