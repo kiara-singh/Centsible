@@ -6,7 +6,7 @@ import Home from "./pages/home";
 import Filter from "./pages/filter";
 import { BrowserRouter as Router } from "react-router-dom";
 import { Routes, Route } from "react-router-dom";
-
+import SpeechToText from "./pages/voiceCommand";
 function App() {
   return (
     <Router>
@@ -18,6 +18,7 @@ function App() {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/home" element={<Home />} />
             <Route path="/filter/:category" element={<Filter />} />
+            <Route path="/voice" element={<SpeechToText />} />
           </Routes>
         </section>
       </div>
